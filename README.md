@@ -1,5 +1,8 @@
 # Сфера CRM
 
+[![CI](https://github.com/alexpops979-commits/sfera-crm/actions/workflows/ci.yml/badge.svg)](https://github.com/alexpops979-commits/sfera-crm/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Открытая CRM для малого бизнеса: клиенты, сделки, воронка продаж, задачи и аналитика.
 Фронтенд на React + TypeScript, бэкенд на NestJS + PostgreSQL.
 
@@ -39,6 +42,8 @@
 Требуется Node.js 22+ и npm 10+. Права администратора не нужны.
 
 ```bash
+git clone https://github.com/alexpops979-commits/sfera-crm.git
+cd sfera-crm
 npm install
 
 # Портативные PostgreSQL 17 и Git в %USERPROFILE%\.devtools (Windows)
