@@ -5,7 +5,7 @@
 Открытая CRM для малого бизнеса: клиенты, сделки, воронка продаж, задачи и аналитика.
 Фронтенд на React + TypeScript, бэкенд на NestJS + PostgreSQL.
 
-[Скачать установщик](../../releases/latest) · [Участие в разработке](CONTRIBUTING.md) · [Лицензия MIT](LICENSE)
+[Скачать установщик](https://github.com/alexpops979-commits/sfera-crm/releases/latest) · [Участие в разработке](CONTRIBUTING.md) · [Лицензия MIT](LICENSE)
 
 ![Дашборд](docs/screenshots/dashboard.png)
 
@@ -116,9 +116,10 @@ npm run build      # сборка всех пакетов
 ### CI
 
 Готовый workflow лежит в [`docs/ci-workflow.yml`](docs/ci-workflow.yml): lint, typecheck,
-build и тесты на каждый push и pull request. Чтобы включить его, скопируйте файл в
-`.github/workflows/ci.yml` через веб-интерфейс GitHub — загрузка workflow-файлов токеном
-требует отдельного scope `workflow`.
+build и тесты на каждый push и pull request. Чтобы включить его, откройте
+[редактор нового файла](https://github.com/alexpops979-commits/sfera-crm/new/main?filename=.github/workflows/ci.yml),
+вставьте содержимое `docs/ci-workflow.yml` и закоммитьте. Загрузка workflow-файлов
+токеном требует отдельного scope `workflow`.
 
 ## Дорожная карта
 
