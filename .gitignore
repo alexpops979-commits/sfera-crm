@@ -37,3 +37,4 @@ tmp/
 shots/
 .logs/
 assets/app.png
+installer/build/

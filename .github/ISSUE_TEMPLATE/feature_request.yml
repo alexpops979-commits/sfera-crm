@@ -1,0 +1,35 @@
+name: Предложение функции
+description: Идея, как сделать CRM полезнее
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Какую задачу решает
+      placeholder: "Менеджеру нужно быстро находить клиента по номеру телефона..."
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Предлагаемое решение
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Альтернативы
+  - type: dropdown
+    id: area
+    attributes:
+      label: Область
+      options:
+        - Клиенты
+        - Сделки и воронка
+        - Задачи
+        - Дашборд и аналитика
+        - Команда и роли
+        - Экспорт
+        - Установщик
+        - Другое

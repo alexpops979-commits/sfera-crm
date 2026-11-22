@@ -1,0 +1,41 @@
+name: Сообщение об ошибке
+description: Что-то работает не так — расскажите, как воспроизвести
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Спасибо за репорт! Чем точнее шаги, тем быстрее получится исправить.
+  - type: textarea
+    id: steps
+    attributes:
+      label: Шаги воспроизведения
+      placeholder: |
+        1. Открыть «Клиенты»
+        2. Нажать «Добавить клиента»
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Ожидаемое поведение
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Фактическое поведение
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Окружение
+      placeholder: "Windows 11, Chrome 131, версия 0.1.0"
+  - type: textarea
+    id: logs
+    attributes:
+      label: Скриншоты и логи
+      description: Можно приложить снимок экрана или ошибки из консоли (F12).

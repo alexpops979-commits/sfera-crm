@@ -13,7 +13,7 @@ if (-not (Test-Path $IconPath)) {
 }
 
 $Desktop = [Environment]::GetFolderPath('Desktop')
-$ShortcutPath = Join-Path $Desktop 'Сфера CRM.lnk'
+$ShortcutPath = Join-Path $Desktop 'Сфера CRM (разработка).lnk'
 $PowerShellPath = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
 
 $shell = New-Object -ComObject WScript.Shell
@@ -22,7 +22,7 @@ $shortcut.TargetPath = $PowerShellPath
 $shortcut.Arguments = "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$Root\scripts\app.ps1`""
 $shortcut.WorkingDirectory = $Root
 $shortcut.IconLocation = "$IconPath,0"
-$shortcut.Description = 'Сфера CRM — клиенты, сделки и воронка продаж'
+$shortcut.Description = 'Сфера CRM (разработка) — dev-сервер из репозитория'
 $shortcut.Save()
 
 if (-not (Test-Path $ShortcutPath)) {

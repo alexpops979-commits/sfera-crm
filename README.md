@@ -1,8 +1,86 @@
 # Сфера CRM
 
-Multi-tenant CRM для небольших компаний: стоматологии, агентства, автосервисы, риелторы.
+Открытая CRM для малого бизнеса: клиенты, сделки, воронка продаж, задачи и аналитика.
+Фронтенд на React + TypeScript, бэкенд на NestJS + PostgreSQL.
 
-**Стек:** React · TypeScript · NestJS · PostgreSQL · Prisma · TanStack Query · Recharts
+[Скачать установщик](../../releases/latest) · [Участие в разработке](CONTRIBUTING.md) · [Лицензия MIT](LICENSE)
+
+![Дашборд](docs/screenshots/dashboard.png)
+
+## Возможности
+
+- **Клиенты** — CRUD, поиск по имени/телефону/email, фильтры, сортировка, пагинация.
+- **Карточка клиента** — контакты, сделки, история коммуникаций и задачи в одном окне.
+- **Воронка продаж** — Kanban с перетаскиванием сделок, суммами по этапам и фильтрами.
+- **Сделки** — реестр с этапами, суммами и ответственными.
+- **Задачи** — просроченные, сегодня, неделя, позже; приоритеты и исполнители.
+- **Дашборд** — выручка, win rate, активная воронка, динамика по неделям, топ менеджеров.
+- **Команда и роли** — Admin / Manager / Employee и матрица прав.
+- **Журнал действий** — кто и когда изменил данные.
+- **Пример данных** — 18 клиентов, 30 сделок и 13 задач, которые можно менять и сбросить.
+
+| Воронка | Клиенты |
+| --- | --- |
+| ![Воронка](docs/screenshots/pipeline.png) | ![Клиенты](docs/screenshots/clients.png) |
+
+## Стек
+
+| Слой | Технологии |
+| --- | --- |
+| Фронтенд | React 19, TypeScript 5.7, Vite 6, React Router 7 |
+| UI | Tailwind CSS 4, Radix UI, shadcn-подход, Lucide, Recharts |
+| Данные | TanStack Query 5, Zod, React Hook Form |
+| Бэкенд | NestJS 11, Prisma 6, PostgreSQL 17, Swagger |
+| Тесты | Vitest (логика), Playwright (UI smoke), Jest (API) |
+| Инструменты | ESLint, Prettier, GitHub Actions, Inno Setup 6 |
+
+## Быстрый старт
+
+Требуется Node.js 22+ и npm 10+. Права администратора не нужны.
+
+```bash
+npm install
+
+# Портативные PostgreSQL 17 и Git в %USERPROFILE%\.devtools (Windows)
+powershell -ExecutionPolicy Bypass -File scripts/setup-tools.ps1
+
+copy apps\api\.env.example apps\api\.env
+npm run db:start
+npm run dev
+```
+
+- Web: http://localhost:5173
+- API: http://localhost:3000/api/v1/health
+- Swagger: http://localhost:3000/docs
+
+> На Windows с кириллицей в имени пользователя `initdb` падает на кодировке.
+> `scripts/db.ps1` обходит это: создаёт кластер WIN1251 и рабочие базы UTF8/ICU.
+> Подробности — в `scripts/db.ps1`.
+
+## Установщик для Windows
+
+```bash
+npm run build:installer
+```
+
+Собирает `dist/SferaCRM-Setup-0.1.0.exe` (~27 МБ).
+
+Что делает установщик:
+
+- ставит приложение в `%LOCALAPPDATA%\Programs\SferaCRM` без прав администратора;
+- добавляет ярлыки на рабочий стол и в меню «Пуск»;
+- запускает локальный сервер на `127.0.0.1:4173` и открывает приложение в отдельном
+  окне Chrome/Edge (без вкладок и адресной строки);
+- создаёт запись «Программы и компоненты» для удаления.
+
+Требования: Windows 10/11 x64 и Chrome или Edge. Данные примера хранятся в профиле
+браузера и не удаляются при обновлении.
+
+## Текущий статус
+
+Версия **0.1.0** — рабочий интерфейс и пример данных. Аутентификация, API и PostgreSQL
+ещё не подключены к интерфейсу: изменения сохраняются в `localStorage` браузера.
+Схема, миграции и API появятся на следующем этапе — см. дорожную карту.
 
 ## Структура
 
@@ -10,124 +88,51 @@ Multi-tenant CRM для небольших компаний: стоматоло�
 CRM/
 ├─ apps/
 │  ├─ api/            NestJS + Prisma (REST, /api/v1)
-│  └─ web/            React + Vite + Tailwind + shadcn/ui
+│  └─ web/            React + Vite + Tailwind
 ├─ packages/
-│  └─ shared/         Общие типы, enum'ы, форматтеры (@crm/shared)
-├─ scripts/           Локальные инструменты (PostgreSQL, Git)
+│  └─ shared/         Общие типы, форматтеры, константы (@crm/shared)
+├─ installer/         Inno Setup: скрипт, payload, сервер и лаунчер
+├─ scripts/           PostgreSQL, ярлыки, скриншоты, smoke-тесты
+├─ docs/              Скриншоты для документации
 └─ package.json       npm workspaces
 ```
-
-## Быстрый старт
-
-Требуется Node.js >= 22. Права администратора не нужны.
-
-```bash
-# 1. Портативные PostgreSQL 17 и Git в %USERPROFILE%\.devtools
-powershell -ExecutionPolicy Bypass -File scripts/setup-tools.ps1
-
-# 2. Зависимости (соберёт @crm/shared)
-npm install
-
-# 3. Переменные окружения
-copy apps\api\.env.example apps\api\.env
-
-# 4. База данных (кластер в %USERPROFILE%\.devtools\pgdata, порт 55432)
-npm run db:start
-
-# 5. Разработка: API :3000 + Web :5173
-npm run dev
-```
-
-- Web: http://localhost:5173
-- API: http://localhost:3000/api/v1/health
-- Swagger: http://localhost:3000/docs
-- PostgreSQL: `localhost:55432` (базы `crm_dev`, `crm_test`, `crm_shadow`)
-
-> Порт 55432 выбран, чтобы не конфликтовать с уже установленной службой PostgreSQL на 5432.
-> Если порт свободен, его можно изменить в `scripts/db.ps1` и `apps/api/.env`.
-
-### Ярлык на рабочем столе
-
-```bash
-npm run shortcut   # создаёт «Сфера CRM» на рабочем столе
-npm run app        # поднимает БД и серверы, открывает окно приложения
-```
-
-Ярлык запускает `scripts/app.ps1`: проверяет PostgreSQL, при необходимости поднимает
-dev-серверы в фоне (логи в `.logs/`) и открывает приложение в Chrome/Edge в режиме
-`--app` — отдельное окно без вкладок и адресной строки, со своим профилем
-(`%LOCALAPPDATA%\SferaCRM\Profile`). Иконка — `assets/app.ico`, генерируется из
-логотипа командой `npm run icon`.
-
-### Особенность Windows с кириллицей в имени пользователя
-
-`initdb` подставляет имя пользователя ОС в ANSI-кодировке. При кириллице в имени
-(`C:\Users\Искандер`) UTF8-кластер не создаётся:
-`invalid byte sequence for encoding "UTF8"`.
-
-`scripts/db.ps1` обходит это автоматически: создаёт кластер в WIN1251 и рабочие базы
-UTF8 (+ ICU `ru-RU`) из `template0`. На машинах с ASCII-именем пользователя скрипт
-создаёт обычный UTF8-кластер.
-
-## Команды
-
-| Команда | Назначение |
-| --- | --- |
-| `npm run dev` | API + Web + watch `@crm/shared` |
-| `npm run build` | Сборка всех пакетов |
-| `npm run lint` | ESLint по монорепо |
-| `npm run typecheck` | Проверка типов во всех пакетах |
-| `npm test` | Тесты API (Jest) |
-| `npm run db:start` / `db:stop` | Локальный PostgreSQL |
-| `npm run db:migrate` | `prisma migrate dev` |
-| `npm run db:seed` | Демо-данные |
-| `npm run db:studio` | Prisma Studio |
-| `npm run shot <url> <file> [w] [h]` | Скриншот страницы через системный Chrome |
-| `npm run smoke:ui` | Проверка интерфейса: карточки и drag & drop |
 
 ## Тесты и проверки
 
 ```bash
-npm test           # модульные тесты (Vitest): метрики, задачи, переходы сделок
+npm test           # Vitest: метрики, задачи, переходы сделок
 npm run lint       # ESLint
 npm run typecheck  # TypeScript во всех пакетах
-npm run smoke:ui   # UI smoke: все разделы, карточки, drag & drop, консоль
+npm run smoke:ui   # Playwright: разделы, формы, карточки, drag & drop
+npm run build      # сборка всех пакетов
 ```
 
-`smoke:ui` требует запущенный dev-сервер (`npm run dev` или ярлык на рабочем столе).
-Lighthouse на дашборде: Accessibility 100, Best Practices 100, SEO 100.
+`smoke:ui` требует запущенный dev-сервер. Lighthouse на дашборде: 100 / 100 / 100.
 
-## Пример данных
+## Дорожная карта
 
-Пока API не подключён, интерфейс работает на примере данных из `apps/web/src/demo/`:
-18 клиентов, 30 сделок, 13 задач, история коммуникаций и журнал действий.
+- [x] Каркас monorepo: API, Web, shared
+- [x] UI-кит, дашборд, канбан, клиенты, задачи, команда, журнал
+- [x] Пример данных с созданием, редактированием и удалением
+- [x] Тесты логики и UI smoke, доступность, code-splitting
+- [x] Установщик для Windows
+- [ ] **Этап 1:** схема Prisma, JWT-аутентификация, multi-tenancy, инвайты
+- [ ] **Этап 2:** API клиентов (поиск, фильтры, пагинация)
+- [ ] **Этап 3:** сделки и воронка на API
+- [ ] **Этап 4:** RBAC и управление сотрудниками
+- [ ] **Этап 5:** дашборд на реальных данных
+- [ ] **Этап 6:** коммуникации, задачи и напоминания
+- [ ] **Этап 7:** экспорт CSV / Excel
+- [ ] **Этап 8:** audit log с diff
+- [ ] **Этап 9:** интеграционные тесты API
+- [ ] **Этап 10:** деплой SaaS
 
-Пример можно менять: создавать, редактировать и удалять клиентов, сделки и задачи.
-Изменения сохраняются в `localStorage` браузера, а кнопка «Сбросить пример» на дашборде
-возвращает исходный набор. В интерфейсе такие данные помечены как «пример».
+## Участие в разработке
 
-Раздел «Помощь» (`/guide`) — короткий сценарий работы для команды и клиентов: от первого
-клиента до аналитики, плюс матрица прав по ролям.
+Issues и pull request'ы приветствуются. Начните с [CONTRIBUTING.md](CONTRIBUTING.md):
+там запуск, стиль коммитов и чек-лист перед PR. Метки `good first issue` помогут
+выбрать первую задачу.
 
-## Переменные окружения
+## Лицензия
 
-`apps/api/.env` — см. `apps/api/.env.example`. Ключевые:
-
-- `DATABASE_URL` — строка подключения к PostgreSQL
-- `SHADOW_DATABASE_URL` — база для `prisma migrate dev`
-- `JWT_ACCESS_SECRET` / `JWT_REFRESH_SECRET` — не короче 32 символов
-- `WEB_ORIGIN` — origin фронтенда для CORS
-
-## Этапы
-
-- [x] **0. Фундамент** — монорепо, PostgreSQL, каркас API и UI
-- [ ] 1. Схема данных, аутентификация, multi-tenancy, инвайты
-- [ ] 2. Клиенты: CRUD, поиск, фильтры, пагинация
-- [ ] 3. Сделки и воронка (Kanban)
-- [ ] 4. RBAC и управление сотрудниками
-- [ ] 5. Дашборд и графики
-- [ ] 6. Коммуникации, задачи и напоминания
-- [ ] 7. Экспорт CSV / Excel
-- [ ] 8. Журнал действий (audit log)
-- [ ] 9. Интеграционные тесты
-- [ ] 10. Деплой SaaS-версии
+[MIT](LICENSE) © 2026 Sfera CRM contributors.
