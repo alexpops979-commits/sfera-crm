@@ -31,7 +31,7 @@ npm install
 # 3. Переменные окружения
 copy apps\api\.env.example apps\api\.env
 
-# 4. База данных (создаст кластер, crm_dev и crm_test)
+# 4. База данных (кластер в %USERPROFILE%\.devtools\pgdata, порт 55432)
 npm run db:start
 
 # 5. Разработка: API :3000 + Web :5173
@@ -41,6 +41,20 @@ npm run dev
 - Web: http://localhost:5173
 - API: http://localhost:3000/api/v1/health
 - Swagger: http://localhost:3000/docs
+- PostgreSQL: `localhost:55432` (базы `crm_dev`, `crm_test`, `crm_shadow`)
+
+> Порт 55432 выбран, чтобы не конфликтовать с уже установленной службой PostgreSQL на 5432.
+> Если порт свободен, его можно изменить в `scripts/db.ps1` и `apps/api/.env`.
+
+### Особенность Windows с кириллицей в имени пользователя
+
+`initdb` подставляет имя пользователя ОС в ANSI-кодировке. При кириллице в имени
+(`C:\Users\Искандер`) UTF8-кластер не создаётся:
+`invalid byte sequence for encoding "UTF8"`.
+
+`scripts/db.ps1` обходит это автоматически: создаёт кластер в WIN1251 и рабочие базы
+UTF8 (+ ICU `ru-RU`) из `template0`. На машинах с ASCII-именем пользователя скрипт
+создаёт обычный UTF8-кластер.
 
 ## Команды
 
@@ -55,12 +69,14 @@ npm run dev
 | `npm run db:migrate` | `prisma migrate dev` |
 | `npm run db:seed` | Демо-данные |
 | `npm run db:studio` | Prisma Studio |
+| `npm run shot <url> <file> [w] [h]` | Скриншот страницы через системный Chrome |
 
 ## Переменные окружения
 
 `apps/api/.env` — см. `apps/api/.env.example`. Ключевые:
 
 - `DATABASE_URL` — строка подключения к PostgreSQL
+- `SHADOW_DATABASE_URL` — база для `prisma migrate dev`
 - `JWT_ACCESS_SECRET` / `JWT_REFRESH_SECRET` — не короче 32 символов
 - `WEB_ORIGIN` — origin фронтенда для CORS
 

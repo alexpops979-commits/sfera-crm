@@ -1,7 +1,5 @@
-import { ROLE_LABELS } from '@crm/shared'
 import {
   Building2,
-  ChevronDown,
   ChevronsUpDown,
   LifeBuoy,
   PanelLeftClose,
@@ -11,7 +9,7 @@ import { NavLink } from 'react-router-dom'
 import { Logo } from '@/components/common/logo'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { DEMO_COMPANY, DEMO_USER } from '@/lib/demo'
+import { DEMO_COMPANY } from '@/lib/demo'
 import { ADMIN_NAV, FOOTER_NAV, MAIN_NAV, type NavItem } from './nav-config'
 
 interface SidebarContentProps {
@@ -180,21 +178,6 @@ export function SidebarContent({
           <LifeBuoy className="size-[18px] shrink-0" strokeWidth={1.9} />
           {!collapsed && <span className="truncate">Помощь</span>}
         </a>
-
-        {!collapsed && (
-          <div className="mt-2 flex items-center gap-2.5 rounded-lg px-3 py-2">
-            <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-[11px] font-semibold text-slate-600">
-              ДА
-            </span>
-            <div className="min-w-0 flex-1">
-              <div className="truncate text-[12.5px] font-medium">{DEMO_USER.name}</div>
-              <div className="truncate text-[10.5px] text-muted-foreground">
-                {ROLE_LABELS[DEMO_USER.role]}
-              </div>
-            </div>
-            <ChevronDown className="size-3.5 text-muted-foreground" />
-          </div>
-        )}
       </div>
     </div>
   )

@@ -1,5 +1,11 @@
 export type Currency = 'RUB' | 'USD' | 'EUR'
 
+const CURRENCY_SYMBOLS: Record<Currency, string> = {
+  RUB: '₽',
+  USD: '$',
+  EUR: '€',
+}
+
 const compactNumber = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 })
 
 export function formatMoney(
@@ -24,10 +30,11 @@ export function formatMoneyCompact(
   if (amount === null) return '—'
   const sign = amount < 0 ? '−' : ''
   const abs = Math.abs(amount)
+  const symbol = CURRENCY_SYMBOLS[currency]
 
-  if (abs < 10_000) return `${sign}${compactNumber.format(abs)} ₽`
-  if (abs < 1_000_000) return `${sign}${compactNumber.format(abs / 1_000)} тыс. ₽`
-  return `${sign}${compactNumber.format(abs / 1_000_000)} млн ₽`
+  if (abs < 10_000) return `${sign}${compactNumber.format(abs)} ${symbol}`
+  if (abs < 1_000_000) return `${sign}${compactNumber.format(abs / 1_000)} тыс. ${symbol}`
+  return `${sign}${compactNumber.format(abs / 1_000_000)} млн ${symbol}`
 }
 
 export function formatNumber(value: number | string | null | undefined): string {

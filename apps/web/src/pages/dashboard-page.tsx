@@ -23,7 +23,6 @@ export function DashboardPage() {
       <PageHeader
         title="Дашборд"
         description="Показатели бизнеса: выручка, сделки и эффективность команды"
-        actions={<Badge variant="muted">Демо-данные появятся на этапе 5</Badge>}
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
