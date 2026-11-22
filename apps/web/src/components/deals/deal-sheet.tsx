@@ -1,10 +1,11 @@
 import { formatDate, formatMoney } from '@crm/shared'
-import { CalendarDays } from 'lucide-react'
+import { CalendarDays, Pencil } from 'lucide-react'
 import { toast } from 'sonner'
 import { ActivityIcon } from '@/components/common/activity-icon'
 import { StageBadge } from '@/components/common/stage-badge'
 import { UserChip } from '@/components/common/user-chip'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet'
@@ -14,9 +15,10 @@ import { dueLabel } from '@/demo/utils'
 interface DealSheetProps {
   dealId: string | null
   onOpenChange: (open: boolean) => void
+  onEditDeal?: (dealId: string) => void
 }
 
-export function DealSheet({ dealId, onOpenChange }: DealSheetProps) {
+export function DealSheet({ dealId, onOpenChange, onEditDeal }: DealSheetProps) {
   const { deals, clients, users, stages, tasks, activities, moveDeal, toggleTask } = useDemo()
 
   const deal = dealId ? (deals.find((item) => item.id === dealId) ?? null) : null
@@ -50,6 +52,12 @@ export function DealSheet({ dealId, onOpenChange }: DealSheetProps) {
                 {deal.title}
               </h2>
               <p className="mt-0.5 text-[13px] text-muted-foreground">{client.name}</p>
+              <div className="mt-3">
+                <Button variant="outline" size="sm" onClick={() => onEditDeal?.(deal.id)}>
+                  <Pencil className="size-3.5" />
+                  Редактировать
+                </Button>
+              </div>
             </div>
 
             <div className="rounded-xl border bg-secondary/40 p-4">

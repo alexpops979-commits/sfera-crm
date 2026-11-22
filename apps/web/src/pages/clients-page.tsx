@@ -1,6 +1,7 @@
 import { formatDate, formatMoney } from '@crm/shared'
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Plus, Search } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { ClientDialog } from '@/components/clients/client-dialog'
 import { ClientSheet } from '@/components/clients/client-sheet'
 import { ClientStatusBadge } from '@/components/common/client-status-badge'
 import { PageHeader } from '@/components/common/page-header'
@@ -27,6 +28,7 @@ export function ClientsPage() {
   const [sort, setSort] = useState<SortKey>('new')
   const [page, setPage] = useState(1)
   const [selectedClient, setSelectedClient] = useState<string | null>(null)
+  const [clientDialog, setClientDialog] = useState<{ clientId?: string } | null>(null)
 
   const rows = useMemo(() => {
     const query = search.trim().toLowerCase()
@@ -71,7 +73,15 @@ export function ClientsPage() {
       <PageHeader
         title="Клиенты"
         description="Единая база клиентов с историей коммуникаций и сделками"
-        actions={<Badge variant="outline">{rows.length} в выборке</Badge>}
+        actions={
+          <div className="flex items-center gap-2">
+            <Badge variant="outline">{rows.length} в выборке</Badge>
+            <Button onClick={() => setClientDialog({})}>
+              <Plus className="size-4" />
+              Добавить клиента
+            </Button>
+          </div>
+        }
       />
 
       <Card className="mb-4 flex flex-col gap-2 p-3 lg:flex-row lg:items-center">
@@ -230,7 +240,23 @@ export function ClientsPage() {
       <ClientSheet
         clientId={selectedClient}
         onOpenChange={(open) => !open && setSelectedClient(null)}
+        onEdit={(clientId) => {
+          setSelectedClient(null)
+          setClientDialog({ clientId })
+        }}
       />
+
+      {clientDialog && (
+        <ClientDialog
+          open
+          onOpenChange={(open) => !open && setClientDialog(null)}
+          client={
+            clientDialog.clientId
+              ? clients.find((client) => client.id === clientDialog.clientId)
+              : undefined
+          }
+        />
+      )}
     </>
   )
 }

@@ -1,8 +1,10 @@
-import { CheckSquare } from 'lucide-react'
+import { CheckSquare, Plus } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { PageHeader } from '@/components/common/page-header'
 import { UserAvatar } from '@/components/common/user-chip'
+import { TaskDialog } from '@/components/tasks/task-dialog'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Select } from '@/components/ui/select'
 import { TASK_PRIORITY_CLASSES, TASK_PRIORITY_LABELS } from '@/demo/labels'
@@ -28,6 +30,7 @@ export function TasksPage() {
   const { tasks, clients, users, toggleTask } = useDemo()
   const [assigneeId, setAssigneeId] = useState('all')
   const [showDone, setShowDone] = useState(true)
+  const [taskDialog, setTaskDialog] = useState<{ taskId?: string } | null>(null)
 
   const filtered = useMemo(
     () => tasks.filter((task) => assigneeId === 'all' || task.assigneeId === assigneeId),
@@ -65,7 +68,15 @@ export function TasksPage() {
       <PageHeader
         title="Задачи"
         description="Звонки, письма и следующие шаги по клиентам и сделкам"
-        actions={<Badge variant="outline">{openCount} открытых</Badge>}
+        actions={
+          <div className="flex items-center gap-2">
+            <Badge variant="outline">{openCount} открытых</Badge>
+            <Button onClick={() => setTaskDialog({})}>
+              <Plus className="size-4" />
+              Новая задача
+            </Button>
+          </div>
+        }
       />
 
       <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -157,14 +168,16 @@ export function TasksPage() {
                         className="mt-0.5 size-4 shrink-0 accent-[#2F6BF6]"
                       />
                       <div className="min-w-0 flex-1">
-                        <div
+                        <button
+                          type="button"
+                          onClick={() => setTaskDialog({ taskId: task.id })}
                           className={cn(
-                            'text-[13px] font-medium',
+                            'text-left text-[13px] font-medium hover:text-primary hover:underline',
                             done && 'text-muted-foreground line-through',
                           )}
                         >
                           {task.title}
-                        </div>
+                        </button>
                         <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
                           {client && <span>{client.name}</span>}
                           {client && <span className="text-border">•</span>}
@@ -202,6 +215,14 @@ export function TasksPage() {
           </Card>
         )}
       </div>
+
+      {taskDialog && (
+        <TaskDialog
+          open
+          onOpenChange={(open) => !open && setTaskDialog(null)}
+          task={taskDialog.taskId ? tasks.find((task) => task.id === taskDialog.taskId) : undefined}
+        />
+      )}
     </>
   )
 }

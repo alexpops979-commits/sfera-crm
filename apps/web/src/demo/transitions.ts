@@ -10,20 +10,11 @@ export function moveDealToStage(
   dealId: string,
   stageId: string,
 ): DemoDeal[] {
-  const stage = stages.find((item) => item.id === stageId)
-
-  return deals.map((deal) => {
-    if (deal.id !== dealId || deal.stageId === stageId) return deal
-
-    const closed = Boolean(stage?.isWon || stage?.isLost)
-
-    return {
-      ...deal,
-      stageId,
-      closedAt: closed ? new Date().toISOString() : undefined,
-      lostReason: stage?.isLost ? (deal.lostReason ?? 'Не указана') : undefined,
-    }
-  })
+  return deals.map((deal) =>
+    deal.id === dealId && deal.stageId !== stageId
+      ? withStage(deal, stageId, stages)
+      : deal,
+  )
 }
 
 export function toggleTaskStatus(tasks: DemoTask[], taskId: string): DemoTask[] {
@@ -32,6 +23,26 @@ export function toggleTaskStatus(tasks: DemoTask[], taskId: string): DemoTask[] 
       ? { ...task, status: task.status === 'OPEN' ? 'DONE' : 'OPEN' }
       : task,
   )
+}
+
+/**
+ * Приводит сделку к выбранному этапу: закрытые этапы проставляют дату
+ * закрытия, возврат в работу её снимает, проигрыш получает причину.
+ */
+export function withStage(
+  deal: DemoDeal,
+  stageId: string,
+  stages: DemoStage[],
+): DemoDeal {
+  const stage = stages.find((item) => item.id === stageId)
+  const closed = Boolean(stage?.isWon || stage?.isLost)
+
+  return {
+    ...deal,
+    stageId,
+    closedAt: closed ? (deal.closedAt ?? new Date().toISOString()) : undefined,
+    lostReason: stage?.isLost ? (deal.lostReason || 'Не указана') : undefined,
+  }
 }
 
 export function changeClientStatus(

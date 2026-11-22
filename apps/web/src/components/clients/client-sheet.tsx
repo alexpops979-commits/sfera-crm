@@ -1,5 +1,5 @@
 import { formatDate, formatMoney } from '@crm/shared'
-import { Building2, CalendarDays, Mail, MapPin, Phone } from 'lucide-react'
+import { Building2, CalendarDays, Mail, MapPin, Pencil, Phone } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { ActivityIcon } from '@/components/common/activity-icon'
@@ -7,6 +7,7 @@ import { ClientStatusBadge } from '@/components/common/client-status-badge'
 import { StageBadge } from '@/components/common/stage-badge'
 import { UserChip } from '@/components/common/user-chip'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
 import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet'
@@ -28,9 +29,10 @@ const TABS: { id: Tab; label: string }[] = [
 interface ClientSheetProps {
   clientId: string | null
   onOpenChange: (open: boolean) => void
+  onEdit?: (clientId: string) => void
 }
 
-export function ClientSheet({ clientId, onOpenChange }: ClientSheetProps) {
+export function ClientSheet({ clientId, onOpenChange, onEdit }: ClientSheetProps) {
   const { clients, deals, stages, users, activities, tasks, setClientStatus, toggleTask } = useDemo()
   const [tab, setTab] = useState<Tab>('profile')
 
@@ -77,6 +79,12 @@ export function ClientSheet({ clientId, onOpenChange }: ClientSheetProps) {
                 {client.contactName}
                 {client.contactPosition ? ` · ${client.contactPosition}` : ''}
               </p>
+              <div className="mt-3">
+                <Button variant="outline" size="sm" onClick={() => onEdit?.(client.id)}>
+                  <Pencil className="size-3.5" />
+                  Редактировать
+                </Button>
+              </div>
             </div>
 
             <div className="flex gap-1 rounded-lg bg-secondary p-1">

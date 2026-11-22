@@ -18,7 +18,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import { DemoNotice } from '@/components/common/demo-notice'
+import { ExampleNotice } from '@/components/common/example-notice'
 import { PageHeader } from '@/components/common/page-header'
 import { UserChip } from '@/components/common/user-chip'
 import { Badge } from '@/components/ui/badge'
@@ -81,7 +81,7 @@ export function DashboardPage() {
         actions={<Badge variant="outline">Последние 30 дней</Badge>}
       />
 
-      <DemoNotice />
+      <ExampleNotice />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Kpi

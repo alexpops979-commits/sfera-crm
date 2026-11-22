@@ -59,7 +59,7 @@ export function GuidePage() {
     <>
       <PageHeader
         title="Как работать в Сфере"
-        description="Короткий сценарий для команды и клиентов: от первого клиента до аналитики"
+        description="Короткий сценарий для команды и клиентов. Данные — пример, их можно менять"
         actions={<Badge variant="outline">5 минут на освоение</Badge>}
       />
 

@@ -3,9 +3,10 @@
  *
  *   npm run smoke:ui        (нужен запущенный dev-сервер на :5173)
  *
- * Проверяет: все разделы открываются, карточки клиента и сделки работают,
- * drag & drop перемещает сделку, в консоли нет ошибок.
+ * Проверяет: все разделы открываются, пример данных помечен, клиента можно
+ * создать и отредактировать, карточки и drag & drop работают, консоль чистая.
  */
+import fs from 'node:fs'
 import { chromium } from 'playwright-core'
 
 const BASE_URL = process.env.APP_URL ?? 'http://localhost:5173'
@@ -16,7 +17,6 @@ const CHROME_CANDIDATES = [
   'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe',
 ].filter(Boolean)
 
-const fs = await import('node:fs')
 const executablePath = CHROME_CANDIDATES.find((candidate) => fs.existsSync(candidate))
 if (!executablePath) {
   console.error('Chrome/Edge не найден. Укажите CHROME_PATH.')
@@ -45,15 +45,36 @@ const routes = [
 ]
 
 const checks = []
+let exampleNotice = 0
 
 for (const [path, expected] of routes) {
   await page.goto(`${BASE_URL}${path}`, { waitUntil: 'networkidle' })
   const heading = ((await page.locator('h1').first().textContent()) ?? '').trim()
   checks.push({ path, heading, ok: heading.includes(expected) })
+  if (path === '/dashboard') {
+    exampleNotice = await page.getByText('Это пример данных').count()
+  }
 }
 
-// Карточка клиента
+// Создание клиента
 await page.goto(`${BASE_URL}/clients`, { waitUntil: 'networkidle' })
+await page.getByRole('button', { name: 'Добавить клиента' }).click()
+await page.locator('#client-name').fill('Тестовая клиника «Пример»')
+await page.getByRole('button', { name: 'Сохранить' }).click()
+await page.waitForTimeout(450)
+const createdClient = await page.getByText('Тестовая клиника «Пример»').count()
+
+// Редактирование клиента
+await page.getByText('Тестовая клиника «Пример»').first().click()
+await page.waitForTimeout(350)
+await page.getByRole('button', { name: 'Редактировать' }).click()
+await page.waitForTimeout(350)
+await page.locator('#client-name').fill('Тестовая клиника «Пример 2»')
+await page.getByRole('button', { name: 'Сохранить' }).click()
+await page.waitForTimeout(450)
+const editedClient = await page.getByText('Тестовая клиника «Пример 2»').count()
+
+// Карточка клиента и вкладка истории
 await page.getByText('Автомойка «Блеск»').first().click()
 await page.waitForTimeout(400)
 const clientSheet = await page.getByRole('dialog').count()
@@ -81,6 +102,9 @@ const failedRoutes = checks.filter((check) => !check.ok)
 const passed =
   errors.length === 0 &&
   failedRoutes.length === 0 &&
+  exampleNotice > 0 &&
+  createdClient > 0 &&
+  editedClient > 0 &&
   clientSheet > 0 &&
   historyTab > 0 &&
   dealSheet > 0 &&
@@ -92,6 +116,9 @@ console.log(
       passed,
       errors,
       routes: checks,
+      exampleNotice,
+      createdClient,
+      editedClient,
       clientSheet,
       historyTab,
       dealSheet,

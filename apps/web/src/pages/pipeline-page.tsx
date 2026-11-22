@@ -1,11 +1,13 @@
 import { formatDate, formatMoneyCompact } from '@crm/shared'
-import { Search } from 'lucide-react'
+import { Plus, Search } from 'lucide-react'
 import { useMemo, useState, type DragEvent } from 'react'
 import { toast } from 'sonner'
 import { PageHeader } from '@/components/common/page-header'
 import { UserAvatar } from '@/components/common/user-chip'
+import { DealDialog } from '@/components/deals/deal-dialog'
 import { DealSheet } from '@/components/deals/deal-sheet'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
@@ -19,6 +21,7 @@ export function PipelinePage() {
   const [draggingId, setDraggingId] = useState<string | null>(null)
   const [overStage, setOverStage] = useState<string | null>(null)
   const [selectedDeal, setSelectedDeal] = useState<string | null>(null)
+  const [dealDialog, setDealDialog] = useState<{ dealId?: string } | null>(null)
 
   const filteredDeals = useMemo(() => {
     const query = search.trim().toLowerCase()
@@ -60,7 +63,15 @@ export function PipelinePage() {
       <PageHeader
         title="Воронка продаж"
         description="Перетаскивайте карточки между этапами — показатели обновятся сразу"
-        actions={<Badge variant="outline">В работе: {formatMoneyCompact(activeValue)}</Badge>}
+        actions={
+          <div className="flex items-center gap-2">
+            <Badge variant="outline">В работе: {formatMoneyCompact(activeValue)}</Badge>
+            <Button onClick={() => setDealDialog({})}>
+              <Plus className="size-4" />
+              Новая сделка
+            </Button>
+          </div>
+        }
       />
 
       <Card className="mb-4 flex flex-col gap-2 p-3 sm:flex-row sm:items-center">
@@ -192,7 +203,24 @@ export function PipelinePage() {
         })}
       </div>
 
-      <DealSheet dealId={selectedDeal} onOpenChange={(open) => !open && setSelectedDeal(null)} />
+      <DealSheet
+        dealId={selectedDeal}
+        onOpenChange={(open) => !open && setSelectedDeal(null)}
+        onEditDeal={(dealId) => {
+          setSelectedDeal(null)
+          setDealDialog({ dealId })
+        }}
+      />
+
+      {dealDialog && (
+        <DealDialog
+          open
+          onOpenChange={(open) => !open && setDealDialog(null)}
+          deal={
+            dealDialog.dealId ? deals.find((deal) => deal.id === dealDialog.dealId) : undefined
+          }
+        />
+      )}
     </>
   )
 }

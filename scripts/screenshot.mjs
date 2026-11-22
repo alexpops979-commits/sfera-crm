@@ -39,7 +39,7 @@ page.on('console', (message) => {
 page.on('pageerror', (error) => errors.push(String(error)))
 
 await page.goto(url, { waitUntil: 'networkidle' })
-await page.waitForTimeout(500)
+await page.waitForTimeout(1800)
 
 const outPath = path.resolve(out)
 fs.mkdirSync(path.dirname(outPath), { recursive: true })

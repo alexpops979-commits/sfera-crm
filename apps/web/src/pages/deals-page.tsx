@@ -1,9 +1,10 @@
 import { formatDate, formatMoney } from '@crm/shared'
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Plus, Search } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { PageHeader } from '@/components/common/page-header'
 import { StageBadge } from '@/components/common/stage-badge'
 import { UserChip } from '@/components/common/user-chip'
+import { DealDialog } from '@/components/deals/deal-dialog'
 import { DealSheet } from '@/components/deals/deal-sheet'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -24,6 +25,7 @@ export function DealsPage() {
   const [sort, setSort] = useState<SortKey>('new')
   const [page, setPage] = useState(1)
   const [selectedDeal, setSelectedDeal] = useState<string | null>(null)
+  const [dealDialog, setDealDialog] = useState<{ dealId?: string } | null>(null)
 
   const rows = useMemo(() => {
     const query = search.trim().toLowerCase()
@@ -69,9 +71,15 @@ export function DealsPage() {
         title="Сделки"
         description="Все сделки компании: суммы, этапы и ответственные"
         actions={
-          <Badge variant="outline">
-            {rows.length} сделок · {formatMoney(totalAmount)}
-          </Badge>
+          <div className="flex items-center gap-2">
+            <Badge variant="outline">
+              {rows.length} сделок · {formatMoney(totalAmount)}
+            </Badge>
+            <Button onClick={() => setDealDialog({})}>
+              <Plus className="size-4" />
+              Новая сделка
+            </Button>
+          </div>
         }
       />
 
@@ -218,7 +226,24 @@ export function DealsPage() {
         </div>
       </Card>
 
-      <DealSheet dealId={selectedDeal} onOpenChange={(open) => !open && setSelectedDeal(null)} />
+      <DealSheet
+        dealId={selectedDeal}
+        onOpenChange={(open) => !open && setSelectedDeal(null)}
+        onEditDeal={(dealId) => {
+          setSelectedDeal(null)
+          setDealDialog({ dealId })
+        }}
+      />
+
+      {dealDialog && (
+        <DealDialog
+          open
+          onOpenChange={(open) => !open && setDealDialog(null)}
+          deal={
+            dealDialog.dealId ? deals.find((deal) => deal.id === dealDialog.dealId) : undefined
+          }
+        />
+      )}
     </>
   )
 }

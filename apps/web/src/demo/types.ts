@@ -90,3 +90,36 @@ export interface DemoAuditEntry {
   entityLabel: string
   createdAt: string
 }
+
+export interface ClientInput {
+  name: string
+  contactName: string
+  phone: string
+  email: string
+  city: string
+  source: string
+  status: ClientStatus
+  ownerId: string
+  tags: string[]
+  notes?: string
+}
+
+export interface DealInput {
+  title: string
+  clientId: string
+  stageId: string
+  amount: number
+  ownerId: string
+  expectedCloseAt: string
+  tags?: string[]
+  lostReason?: string
+}
+
+export interface TaskInput {
+  title: string
+  dueAt: string
+  priority: TaskPriority
+  assigneeId: string
+  clientId?: string
+  dealId?: string
+}
