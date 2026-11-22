@@ -121,7 +121,7 @@ export function SidebarContent({
 
       <nav className="no-scrollbar flex min-h-0 flex-1 flex-col gap-1 overflow-y-auto px-3 py-4">
         {!collapsed && (
-          <div className="px-3 pb-1 text-[10.5px] font-semibold tracking-[0.08em] text-muted-foreground/80 uppercase">
+          <div className="px-3 pb-1 text-[10.5px] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
             Основное
           </div>
         )}
@@ -130,7 +130,7 @@ export function SidebarContent({
         ))}
 
         {!collapsed && (
-          <div className="px-3 pt-4 pb-1 text-[10.5px] font-semibold tracking-[0.08em] text-muted-foreground/80 uppercase">
+          <div className="px-3 pt-4 pb-1 text-[10.5px] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
             Управление
           </div>
         )}

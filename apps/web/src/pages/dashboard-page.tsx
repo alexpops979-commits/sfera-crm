@@ -52,7 +52,7 @@ function Kpi({ icon: Icon, label, value, hint, trend }: KpiProps) {
           <span
             className={cn(
               'flex items-center gap-0.5 font-medium',
-              trend >= 0 ? 'text-emerald-600' : 'text-red-500',
+              trend >= 0 ? 'text-emerald-700' : 'text-red-600',
             )}
           >
             {trend >= 0 ? (

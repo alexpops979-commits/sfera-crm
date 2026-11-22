@@ -80,7 +80,7 @@ export function TasksPage() {
             <div
               className={cn(
                 'mt-1 text-[24px] leading-none font-semibold tracking-[-0.02em]',
-                item.accent ? 'text-red-500' : 'text-foreground',
+                item.accent ? 'text-red-600' : 'text-foreground',
               )}
             >
               {item.value}
@@ -122,7 +122,7 @@ export function TasksPage() {
                 <h2
                   className={cn(
                     'text-[13px] font-semibold',
-                    bucket === 'overdue' && 'text-red-500',
+                    bucket === 'overdue' && 'text-red-600',
                   )}
                 >
                   {TASK_BUCKET_LABELS[bucket]}
@@ -153,6 +153,7 @@ export function TasksPage() {
                         type="checkbox"
                         checked={done}
                         onChange={() => toggleTask(task.id)}
+                        aria-label={task.title}
                         className="mt-0.5 size-4 shrink-0 accent-[#2F6BF6]"
                       />
                       <div className="min-w-0 flex-1">
@@ -167,7 +168,7 @@ export function TasksPage() {
                         <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-muted-foreground">
                           {client && <span>{client.name}</span>}
                           {client && <span className="text-border">•</span>}
-                          <span className={overdue ? 'font-medium text-red-500' : ''}>
+                          <span className={overdue ? 'font-medium text-red-600' : ''}>
                             {dueLabel(task.dueAt)}
                           </span>
                         </div>

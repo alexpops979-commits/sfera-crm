@@ -5,7 +5,6 @@ import { UserChip } from '@/components/common/user-chip'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useDemo } from '@/demo/store'
-import { cn } from '@/lib/utils'
 
 export function SettingsPage() {
   const { company, stages, users, currentUser } = useDemo()
@@ -131,7 +130,7 @@ export function SettingsPage() {
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-muted-foreground">Изоляция данных</span>
-                  <span className={cn('font-medium text-emerald-600')}>включена</span>
+                  <span className="font-medium text-emerald-700">включена</span>
                 </div>
               </div>
             </CardContent>

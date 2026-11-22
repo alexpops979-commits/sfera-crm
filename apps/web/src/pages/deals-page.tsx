@@ -136,12 +136,12 @@ export function DealsPage() {
           <table className="w-full min-w-[820px] text-left">
             <thead>
               <tr className="border-b bg-secondary/30 text-[10.5px] tracking-[0.06em] text-muted-foreground uppercase">
-                <th className="px-5 py-2.5 font-medium">Сделка</th>
-                <th className="px-3 py-2.5 font-medium">Этап</th>
-                <th className="px-3 py-2.5 text-right font-medium">Сумма</th>
-                <th className="px-3 py-2.5 font-medium">Ответственный</th>
-                <th className="px-3 py-2.5 font-medium">Клиент</th>
-                <th className="px-5 py-2.5 font-medium">Закрытие</th>
+                <th scope="col" className="px-5 py-2.5 font-medium">Сделка</th>
+                <th scope="col" className="px-3 py-2.5 font-medium">Этап</th>
+                <th scope="col" className="px-3 py-2.5 text-right font-medium">Сумма</th>
+                <th scope="col" className="px-3 py-2.5 font-medium">Ответственный</th>
+                <th scope="col" className="px-3 py-2.5 font-medium">Клиент</th>
+                <th scope="col" className="px-5 py-2.5 font-medium">Закрытие</th>
               </tr>
             </thead>
             <tbody className="divide-y">
@@ -149,12 +149,19 @@ export function DealsPage() {
                 <tr
                   key={deal.id}
                   onClick={() => setSelectedDeal(deal.id)}
-                  className="cursor-pointer transition-colors hover:bg-secondary/40"
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault()
+                      setSelectedDeal(deal.id)
+                    }
+                  }}
+                  tabIndex={0}
+                  className="cursor-pointer transition-colors hover:bg-secondary/40 focus-visible:bg-secondary/60 focus-visible:outline-none"
                 >
                   <td className="px-5 py-3">
                     <div className="text-[13px] font-medium">{deal.title}</div>
                     {deal.lostReason && (
-                      <div className="mt-0.5 text-[11px] text-red-500">{deal.lostReason}</div>
+                      <div className="mt-0.5 text-[11px] text-red-600">{deal.lostReason}</div>
                     )}
                   </td>
                   <td className="px-3 py-3">{stage && <StageBadge stage={stage} />}</td>

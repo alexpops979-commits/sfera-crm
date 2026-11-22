@@ -132,6 +132,8 @@ export function PipelinePage() {
                     <article
                       key={deal.id}
                       draggable
+                      role="button"
+                      tabIndex={0}
                       onDragStart={(event) => {
                         event.dataTransfer.setData('text/plain', deal.id)
                         event.dataTransfer.effectAllowed = 'move'
@@ -142,8 +144,14 @@ export function PipelinePage() {
                         setOverStage(null)
                       }}
                       onClick={() => setSelectedDeal(deal.id)}
+                      onKeyDown={(event) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault()
+                          setSelectedDeal(deal.id)
+                        }
+                      }}
                       className={cn(
-                        'cursor-pointer rounded-xl border bg-card p-3 shadow-xs transition-all hover:border-primary/25 hover:shadow-sm',
+                        'cursor-pointer rounded-xl border bg-card p-3 shadow-xs transition-all hover:border-primary/25 hover:shadow-sm focus-visible:ring-2 focus-visible:ring-ring/30 focus-visible:outline-none',
                         draggingId === deal.id && 'opacity-40',
                       )}
                     >

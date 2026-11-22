@@ -21,6 +21,7 @@ import type {
   DemoTask,
   DemoUser,
 } from './types'
+import { changeClientStatus, moveDealToStage, toggleTaskStatus } from './transitions'
 
 interface DemoStore {
   company: DemoCompany
@@ -48,35 +49,15 @@ export function DemoProvider({ children }: { children: ReactNode }) {
   const [clients, setClients] = useState<DemoClient[]>(demoClients)
 
   const moveDeal = useCallback((dealId: string, stageId: string) => {
-    setDeals((current) =>
-      current.map((deal) => {
-        if (deal.id !== dealId) return deal
-        const stage = demoStages.find((item) => item.id === stageId)
-        const closed = Boolean(stage?.isWon || stage?.isLost)
-        return {
-          ...deal,
-          stageId,
-          closedAt: closed ? new Date().toISOString() : undefined,
-          lostReason: stage?.isLost ? (deal.lostReason ?? 'Не указана') : undefined,
-        }
-      }),
-    )
+    setDeals((current) => moveDealToStage(current, demoStages, dealId, stageId))
   }, [])
 
   const toggleTask = useCallback((taskId: string) => {
-    setTasks((current) =>
-      current.map((task) =>
-        task.id === taskId
-          ? { ...task, status: task.status === 'OPEN' ? 'DONE' : 'OPEN' }
-          : task,
-      ),
-    )
+    setTasks((current) => toggleTaskStatus(current, taskId))
   }, [])
 
   const setClientStatus = useCallback((clientId: string, status: ClientStatus) => {
-    setClients((current) =>
-      current.map((client) => (client.id === clientId ? { ...client, status } : client)),
-    )
+    setClients((current) => changeClientStatus(current, clientId, status))
   }, [])
 
   const value = useMemo<DemoStore>(

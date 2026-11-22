@@ -85,6 +85,18 @@ UTF8 (+ ICU `ru-RU`) из `template0`. На машинах с ASCII-именем
 | `npm run shot <url> <file> [w] [h]` | Скриншот страницы через системный Chrome |
 | `npm run smoke:ui` | Проверка интерфейса: карточки и drag & drop |
 
+## Тесты и проверки
+
+```bash
+npm test           # модульные тесты (Vitest): метрики, задачи, переходы сделок
+npm run lint       # ESLint
+npm run typecheck  # TypeScript во всех пакетах
+npm run smoke:ui   # UI smoke: все разделы, карточки, drag & drop, консоль
+```
+
+`smoke:ui` требует запущенный dev-сервер (`npm run dev` или ярлык на рабочем столе).
+Lighthouse на дашборде: Accessibility 100, Best Practices 100, SEO 100.
+
 ## Демо-данные
 
 Пока API не подключён, интерфейс работает на демо-данных из `apps/web/src/demo/`:

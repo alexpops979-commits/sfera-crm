@@ -233,6 +233,7 @@ export function ClientSheet({ clientId, onOpenChange }: ClientSheetProps) {
                       type="checkbox"
                       checked={task.status === 'DONE'}
                       onChange={() => toggleTask(task.id)}
+                      aria-label={task.title}
                       className="mt-0.5 size-4 accent-[#2F6BF6]"
                     />
                     <span className="min-w-0">

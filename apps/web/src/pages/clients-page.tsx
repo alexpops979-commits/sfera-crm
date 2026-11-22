@@ -136,12 +136,12 @@ export function ClientsPage() {
           <table className="w-full min-w-[760px] text-left">
             <thead>
               <tr className="border-b bg-secondary/30 text-[10.5px] tracking-[0.06em] text-muted-foreground uppercase">
-                <th className="px-5 py-2.5 font-medium">Клиент</th>
-                <th className="px-3 py-2.5 font-medium">Статус</th>
-                <th className="px-3 py-2.5 font-medium">Ответственный</th>
-                <th className="px-3 py-2.5 text-right font-medium">Сделки</th>
-                <th className="px-3 py-2.5 font-medium">Активность</th>
-                <th className="px-5 py-2.5 font-medium">В базе с</th>
+                <th scope="col" className="px-5 py-2.5 font-medium">Клиент</th>
+                <th scope="col" className="px-3 py-2.5 font-medium">Статус</th>
+                <th scope="col" className="px-3 py-2.5 font-medium">Ответственный</th>
+                <th scope="col" className="px-3 py-2.5 text-right font-medium">Сделки</th>
+                <th scope="col" className="px-3 py-2.5 font-medium">Активность</th>
+                <th scope="col" className="px-5 py-2.5 font-medium">В базе с</th>
               </tr>
             </thead>
             <tbody className="divide-y">
@@ -149,7 +149,14 @@ export function ClientsPage() {
                 <tr
                   key={client.id}
                   onClick={() => setSelectedClient(client.id)}
-                  className="cursor-pointer transition-colors hover:bg-secondary/40"
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault()
+                      setSelectedClient(client.id)
+                    }
+                  }}
+                  tabIndex={0}
+                  className="cursor-pointer transition-colors hover:bg-secondary/40 focus-visible:bg-secondary/60 focus-visible:outline-none"
                 >
                   <td className="px-5 py-3">
                     <div className="text-[13px] font-medium">{client.name}</div>

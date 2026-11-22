@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import App from './App'
+import { ErrorBoundary } from './components/common/error-boundary'
 import { DemoProvider } from './demo/store'
 import './styles/index.css'
 
@@ -24,10 +25,12 @@ createRoot(rootElement).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <DemoProvider>
-        <BrowserRouter>
-          <App />
-          <Toaster position="top-right" richColors closeButton />
-        </BrowserRouter>
+        <ErrorBoundary>
+          <BrowserRouter>
+            <App />
+            <Toaster position="top-right" richColors closeButton />
+          </BrowserRouter>
+        </ErrorBoundary>
       </DemoProvider>
     </QueryClientProvider>
   </StrictMode>,
