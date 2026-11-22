@@ -29,6 +29,7 @@
     "db:seed": "npm run db:seed --workspace @crm/api",
     "db:studio": "npm run db:studio --workspace @crm/api",
     "shot": "node scripts/screenshot.mjs",
+    "smoke:ui": "node scripts/ui-smoke.mjs",
     "icon": "node scripts/make-icon.mjs",
     "shortcut": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/create-shortcut.ps1",
     "app": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/app.ps1"

@@ -7,6 +7,7 @@ const CURRENCY_SYMBOLS: Record<Currency, string> = {
 }
 
 const compactNumber = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 })
+const compactNumber2 = new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 2 })
 
 export function formatMoney(
   value: number | string | null | undefined,
@@ -34,7 +35,7 @@ export function formatMoneyCompact(
 
   if (abs < 10_000) return `${sign}${compactNumber.format(abs)} ${symbol}`
   if (abs < 1_000_000) return `${sign}${compactNumber.format(abs / 1_000)} тыс. ${symbol}`
-  return `${sign}${compactNumber.format(abs / 1_000_000)} млн ${symbol}`
+  return `${sign}${compactNumber2.format(abs / 1_000_000)} млн ${symbol}`
 }
 
 export function formatNumber(value: number | string | null | undefined): string {

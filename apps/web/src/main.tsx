@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import App from './App'
+import { DemoProvider } from './demo/store'
 import './styles/index.css'
 
 const queryClient = new QueryClient({
@@ -22,10 +23,12 @@ if (!rootElement) throw new Error('Не найден элемент #root')
 createRoot(rootElement).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <App />
-        <Toaster position="top-right" richColors closeButton />
-      </BrowserRouter>
+      <DemoProvider>
+        <BrowserRouter>
+          <App />
+          <Toaster position="top-right" richColors closeButton />
+        </BrowserRouter>
+      </DemoProvider>
     </QueryClientProvider>
   </StrictMode>,
 )

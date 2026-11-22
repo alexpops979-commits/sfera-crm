@@ -9,6 +9,7 @@ import { PipelinePage } from '@/pages/pipeline-page'
 import { SettingsPage } from '@/pages/settings-page'
 import { TasksPage } from '@/pages/tasks-page'
 import { TeamPage } from '@/pages/team-page'
+import { GuidePage } from '@/pages/guide-page'
 import { LoginPage } from '@/pages/auth/login-page'
 import { RegisterPage } from '@/pages/auth/register-page'
 
@@ -28,6 +29,7 @@ export default function App() {
         <Route path="/team" element={<TeamPage />} />
         <Route path="/audit" element={<AuditPage />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/guide" element={<GuidePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

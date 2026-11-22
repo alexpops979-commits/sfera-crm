@@ -1,4 +1,4 @@
-import { ROLE_LABELS, initials } from '@crm/shared'
+import { ROLE_LABELS } from '@crm/shared'
 import { useQueryClient } from '@tanstack/react-query'
 import {
   Bell,
@@ -13,7 +13,7 @@ import {
 import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/common/user-chip'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -26,13 +26,14 @@ import {
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
-import { DEMO_USER } from '@/lib/demo'
+import { useDemo } from '@/demo/store'
 
 interface TopbarProps {
   onOpenMobileNav: () => void
 }
 
 export function Topbar({ onOpenMobileNav }: TopbarProps) {
+  const { currentUser } = useDemo()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const searchRef = useRef<HTMLInputElement>(null)
@@ -112,15 +113,13 @@ export function Topbar({ onOpenMobileNav }: TopbarProps) {
               type="button"
               className="flex items-center gap-2.5 rounded-lg px-1.5 py-1 transition-colors outline-none hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring/30"
             >
-              <Avatar className="size-8">
-                <AvatarFallback>{initials(DEMO_USER.name)}</AvatarFallback>
-              </Avatar>
+              <UserAvatar user={currentUser} className="size-8" />
               <span className="hidden text-left leading-tight sm:block">
                 <span className="block max-w-[160px] truncate text-[13px] font-medium">
-                  {DEMO_USER.name}
+                  {currentUser.name}
                 </span>
                 <span className="block text-[10.5px] text-muted-foreground">
-                  {ROLE_LABELS[DEMO_USER.role]}
+                  {ROLE_LABELS[currentUser.role]}
                 </span>
               </span>
               <ChevronDown className="hidden size-3.5 text-muted-foreground sm:block" />
@@ -129,9 +128,9 @@ export function Topbar({ onOpenMobileNav }: TopbarProps) {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>
               <span className="block truncate text-[12.5px] font-medium text-foreground">
-                {DEMO_USER.name}
+                {currentUser.name}
               </span>
-              <span className="block truncate text-[11px] font-normal">{DEMO_USER.email}</span>
+              <span className="block truncate text-[11px] font-normal">{currentUser.email}</span>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={() => navigate('/settings')}>

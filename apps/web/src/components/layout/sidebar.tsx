@@ -1,15 +1,14 @@
 import {
   Building2,
   ChevronsUpDown,
-  LifeBuoy,
   PanelLeftClose,
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { Logo } from '@/components/common/logo'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { DEMO_COMPANY } from '@/lib/demo'
-import { ADMIN_NAV, FOOTER_NAV, MAIN_NAV, type NavItem } from './nav-config'
+import { useDemo } from '@/demo/store'
+import { ADMIN_NAV, FOOTER_NAV, HELP_NAV, MAIN_NAV, type NavItem } from './nav-config'
 
 interface SidebarContentProps {
   collapsed: boolean
@@ -55,6 +54,8 @@ export function SidebarContent({
   onNavigate,
   showToggle = true,
 }: SidebarContentProps) {
+  const { company } = useDemo()
+
   return (
     <div className="flex h-full min-h-0 flex-col">
       <div
@@ -95,7 +96,7 @@ export function SidebarContent({
             variant="outline"
             size="icon-sm"
             className="mx-auto flex border-dashed text-muted-foreground"
-            title={DEMO_COMPANY.name}
+            title={company.name}
           >
             <Building2 className="size-4" />
           </Button>
@@ -108,7 +109,7 @@ export function SidebarContent({
               <Building2 className="size-3.5" />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block truncate text-[13px] font-medium">{DEMO_COMPANY.name}</span>
+              <span className="block truncate text-[13px] font-medium">{company.name}</span>
               <span className="block text-[10.5px] text-muted-foreground">
                 Рабочее пространство
               </span>
@@ -143,18 +144,7 @@ export function SidebarContent({
         {FOOTER_NAV.map((item) => (
           <NavItemLink key={item.to} item={item} collapsed={collapsed} onNavigate={onNavigate} />
         ))}
-        <a
-          href="#help"
-          onClick={onNavigate}
-          title={collapsed ? 'Помощь' : undefined}
-          className={cn(
-            'group flex h-10 items-center gap-3 rounded-lg px-3 text-[13.5px] font-medium text-slate-600 transition-colors hover:bg-secondary hover:text-slate-900',
-            collapsed && 'justify-center px-0',
-          )}
-        >
-          <LifeBuoy className="size-[18px] shrink-0" strokeWidth={1.9} />
-          {!collapsed && <span className="truncate">Помощь</span>}
-        </a>
+        <NavItemLink item={HELP_NAV} collapsed={collapsed} onNavigate={onNavigate} />
       </div>
     </div>
   )

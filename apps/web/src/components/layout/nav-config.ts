@@ -4,6 +4,7 @@ import {
   Columns3,
   History,
   LayoutDashboard,
+  LifeBuoy,
   Settings,
   UserCog,
   Users,
@@ -32,4 +33,6 @@ export const ADMIN_NAV: NavItem[] = [
 
 export const FOOTER_NAV: NavItem[] = [{ to: '/settings', label: 'Настройки', icon: Settings }]
 
-export const ALL_NAV: NavItem[] = [...MAIN_NAV, ...ADMIN_NAV, ...FOOTER_NAV]
+export const HELP_NAV: NavItem = { to: '/guide', label: 'Помощь', icon: LifeBuoy }
+
+export const ALL_NAV: NavItem[] = [...MAIN_NAV, ...ADMIN_NAV, ...FOOTER_NAV, HELP_NAV]
