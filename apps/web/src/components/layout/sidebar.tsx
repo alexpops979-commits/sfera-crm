@@ -3,7 +3,6 @@ import {
   ChevronsUpDown,
   LifeBuoy,
   PanelLeftClose,
-  Sparkles,
 } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { Logo } from '@/components/common/logo'
@@ -111,7 +110,7 @@ export function SidebarContent({
             <span className="min-w-0 flex-1">
               <span className="block truncate text-[13px] font-medium">{DEMO_COMPANY.name}</span>
               <span className="block text-[10.5px] text-muted-foreground">
-                Тариф {DEMO_COMPANY.plan}
+                Рабочее пространство
               </span>
             </span>
             <ChevronsUpDown className="size-3.5 shrink-0 text-muted-foreground" />
@@ -139,28 +138,6 @@ export function SidebarContent({
           <NavItemLink key={item.to} item={item} collapsed={collapsed} onNavigate={onNavigate} />
         ))}
       </nav>
-
-      {!collapsed && (
-        <div className="px-3 pb-3">
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#3B74FF] to-[#1B4BD6] p-4 text-white shadow-lg shadow-primary/25">
-            <div className="absolute -top-10 -right-8 size-24 rounded-full bg-white/10" />
-            <div className="absolute -right-2 -bottom-10 size-20 rounded-full bg-white/10" />
-            <div className="relative">
-              <Sparkles className="size-4" />
-              <p className="mt-2 text-[13px] font-semibold">Больше возможностей</p>
-              <p className="mt-1 text-[11.5px] leading-relaxed text-white/75">
-                Автоматизация, интеграции и расширенная аналитика в тарифе Pro.
-              </p>
-              <Button
-                size="sm"
-                className="mt-3 w-full bg-white text-[#1B4BD6] shadow-none hover:bg-white/90"
-              >
-                Перейти на Pro
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
 
       <div className="shrink-0 border-t px-3 py-3">
         {FOOTER_NAV.map((item) => (

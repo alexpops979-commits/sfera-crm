@@ -6,7 +6,6 @@ import type { Role } from '@crm/shared'
  */
 export const DEMO_COMPANY = {
   name: 'Демо-компания',
-  plan: 'Trial',
 }
 
 export const DEMO_USER: { name: string; email: string; role: Role } = {

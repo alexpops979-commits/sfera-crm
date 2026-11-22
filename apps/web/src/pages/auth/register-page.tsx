@@ -21,7 +21,7 @@ export function RegisterPage() {
   return (
     <AuthLayout
       title="Создать компанию"
-      description="Бесплатный доступ на время настройки. Карта не нужна"
+      description="Создайте рабочее пространство для команды"
       footer={
         <>
           Уже есть аккаунт?{' '}
