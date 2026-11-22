@@ -1,6 +1,5 @@
 # Сфера CRM
 
-[![CI](https://github.com/alexpops979-commits/sfera-crm/actions/workflows/ci.yml/badge.svg)](https://github.com/alexpops979-commits/sfera-crm/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Открытая CRM для малого бизнеса: клиенты, сделки, воронка продаж, задачи и аналитика.
@@ -113,6 +112,13 @@ npm run build      # сборка всех пакетов
 ```
 
 `smoke:ui` требует запущенный dev-сервер. Lighthouse на дашборде: 100 / 100 / 100.
+
+### CI
+
+Готовый workflow лежит в [`docs/ci-workflow.yml`](docs/ci-workflow.yml): lint, typecheck,
+build и тесты на каждый push и pull request. Чтобы включить его, скопируйте файл в
+`.github/workflows/ci.yml` через веб-интерфейс GitHub — загрузка workflow-файлов токеном
+требует отдельного scope `workflow`.
 
 ## Дорожная карта
 
